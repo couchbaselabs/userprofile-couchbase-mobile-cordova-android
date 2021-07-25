@@ -1,0 +1,7 @@
+{
+  "name": "UserProfileIonic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
