@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
 
     const config = {
-      name: this.email,
+      dbName: this.email,
       directory: "couchdb"
     };
 

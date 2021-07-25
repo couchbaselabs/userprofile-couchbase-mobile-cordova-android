@@ -26,14 +26,14 @@ export class HomeComponent implements OnInit {
 
     this.email = this.sharedService.getDatabaseName();
     this.loadProfile();
+    this.addChangeListener();
   }
-
 
   loadProfile() {
 
     const params = {
-      database: this.email,
-      id: "user::" + this.email
+      dbName: this.email,
+      docId: "user::" + this.email
     };
 
     CouchbaseLitePlugin.getDocument(params, (result: any) => {
@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-
   editPic() {
 
     const options: CameraOptions = {
@@ -77,7 +76,7 @@ export class HomeComponent implements OnInit {
 
     this.camera.getPicture(options).then((base64) => {
 
-      this.profilePic = base64;   
+      this.profilePic = base64;
 
     }, (e: any) => console.error(e));
   }
@@ -85,7 +84,7 @@ export class HomeComponent implements OnInit {
   saveProfile() {
 
     const config = {
-      database: this.email,
+      dbName: this.email,
       imageData: this.profilePic,
       contentType: 'image/jpeg'
     };
@@ -93,8 +92,8 @@ export class HomeComponent implements OnInit {
     CouchbaseLitePlugin.setBlob(config, (blob: any) => {
 
       const params = {
-        database: this.email,
-        id: "user::" + this.email,
+        dbName: this.email,
+        docId: "user::" + this.email,
         document: {
           name: this.name,
           address: this.address,
@@ -124,17 +123,34 @@ export class HomeComponent implements OnInit {
 
   }
 
-  logout() {
+  addChangeListener() {
+    const params = {
+      dbName: this.email
+    }
+    CouchbaseLitePlugin.addChangeListener(params, (result: any) => {
+      if (result) {
+        console.log(result);
+      }
+    }, (err: any) => {
+      console.error(err);
+    });
+  }
+
+
+  async logout() {
 
     const params = {
-      name: this.email
+      dbName: this.email
     };
 
-    CouchbaseLitePlugin.closeDatabase(params, (result: any) => {
-      this.router.navigate(['/login']);
+    CouchbaseLitePlugin.removeChangeListener(params, (result: any) => {
+      CouchbaseLitePlugin.closeDatabase(params, (result: any) => {
+        this.router.navigate(['/login']);
+      }, (err: any) => {
+        console.error(err)
+      });
     }, (err: any) => {
-      this.router.navigate(['/login']);
-      console.error(err)
+      console.error(err);
     });
 
   }
