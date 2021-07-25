@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
         if (result.profilePic) {
 
           const params = {
-            database: this.email,
+            dbName: this.email,
             blob: result.profilePic
           }
 
