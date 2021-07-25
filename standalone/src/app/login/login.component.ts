@@ -12,13 +12,14 @@ declare var CouchbaseLitePlugin: any;
 export class LoginComponent implements OnInit {
 
 
-  email: string = "";
-  password: string = "";
+  email: string;
+  password: string;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
-
+    this.email = "";
+    this.password = "";
   }
 
   onSubmit() {
