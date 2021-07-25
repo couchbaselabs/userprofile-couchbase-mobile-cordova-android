@@ -81,46 +81,56 @@ export class HomeComponent implements OnInit {
     }, (e: any) => console.error(e));
   }
 
-  saveProfile() {
+  async saveProfile() {
 
-    const config = {
-      dbName: this.email,
-      imageData: this.profilePic,
-      contentType: 'image/jpeg'
-    };
-
-    CouchbaseLitePlugin.setBlob(config, (blob: any) => {
-
-      const params = {
+    if (this.profilePic) {
+      const config = {
         dbName: this.email,
-        docId: "user::" + this.email,
-        document: {
-          name: this.name,
-          address: this.address,
-          profilePic: blob
-        }
-      }
+        imageData: this.profilePic,
+        contentType: 'image/jpeg'
+      };
 
-      CouchbaseLitePlugin.saveDocument(params, async (result: any) => {
+      CouchbaseLitePlugin.setBlob(config, (blob: any) => {
 
-        if (result == 'OK') {
-          const alert = await this.alertController.create({
-            header: 'Application Message',
-            subHeader: '',
-            message: 'Profile updated successfully',
-            buttons: ['OK']
-          });
-          await alert.present();
+        const params = {
+          dbName: this.email,
+          docId: "user::" + this.email,
+          document: {
+            name: this.name,
+            address: this.address,
+            profilePic: blob
+          }
         }
+
+        CouchbaseLitePlugin.saveDocument(params, async (result: any) => {
+
+          if (result == 'OK') {
+            const alert = await this.alertController.create({
+              header: 'Application Message',
+              subHeader: '',
+              message: 'Profile updated successfully',
+              buttons: ['OK']
+            });
+            await alert.present();
+          }
+
+        }, (err: any) => {
+          console.error(err);
+        });
 
       }, (err: any) => {
         console.error(err);
       });
 
-    }, (err: any) => {
-      console.error(err);
-    });
-
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Application Message',
+        subHeader: '',
+        message: 'Please choose a profile picture.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
   }
 
   addChangeListener() {
