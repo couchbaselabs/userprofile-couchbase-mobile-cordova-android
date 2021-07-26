@@ -18,10 +18,10 @@ This version of app extends the "query" version of the app and demonstrates basi
 # Build Instructions
 
 ## Pre-requisites
-1. couchbase-lite-android SDK >= v.3.0.0
-2. Ionic CLI >= v6.16.0 
-3. Cordova CLI >= 9.0.0
-4. angular/cli >= 12.0.0
+1. Ionic CLI >= v6.16.0 
+2. Cordova CLI >= 9.0.0
+3. angular/cli >= 12.0.0
+4. couchbase-lite-cordova-plugin-android (url: https://github.com/rajagp/couchbase-lite-cordova-plugin-android )
 
 ##  Build & Run
 1. clone repository
@@ -32,4 +32,4 @@ Note: This project itself does not install couchbase-lite-cordova-plugin-android
 Next step: Follow plugin install instructions from https://github.com/rajagp/couchbase-lite-cordova-plugin-android
 
 4. After installing the plugin run commmand: ionic cordova platform add android
-5. Run the projec using command: ionic cordova run android
+5. Run the project sing command: ionic cordova run android
