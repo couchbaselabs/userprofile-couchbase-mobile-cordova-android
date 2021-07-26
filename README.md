@@ -28,7 +28,8 @@ This version of app extends the "query" version of the app and demonstrates basi
 2. cd into /standalone directory.
 3. run command: npm install
 
-Note: This project itself does not install couchbase-lite-cordova-plugin-android. 
+## Note: This project itself does not install couchbase-lite-cordova-plugin-android. 
+
 Next step: Follow plugin install instructions from https://github.com/rajagp/couchbase-lite-cordova-plugin-android
 
 4. After installing the plugin run commmand: ionic cordova platform add android
