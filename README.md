@@ -33,4 +33,4 @@ This version of app extends the "query" version of the app and demonstrates basi
 Next step: Follow plugin install instructions from https://github.com/rajagp/couchbase-lite-cordova-plugin-android
 
 4. After installing the plugin run commmand: ionic cordova platform add android
-5. Run the project sing command: ionic cordova run android
+5. Run the project using command: ionic cordova run android
