@@ -14,10 +14,22 @@ This version of app extends the "standalone" version of the app and demonstrates
 # sync
 This version of app extends the "query" version of the app and demonstrates basic database sync functionality. The app supports bi-directional sync with a remote Couchbase Server database through a Sync Gateway.
 
+
 # Build Instructions
 
 ## Pre-requisites
-TBD
+1. couchbase-lite-android SDK >= v.3.0.0
+2. Ionic CLI >= v6.16.0 
+3. Cordova CLI >= 9.0.0
+4. angular/cli >= 12.0.0
 
 ##  Build & Run
-TBD
+1. clone repository
+2. cd into /standalone directory.
+3. run command: npm install
+
+Note: This project itself does not install couchbase-lite-cordova-plugin-android. 
+Next step: Follow plugin install instructions from https://github.com/rajagp/couchbase-lite-cordova-plugin-android
+
+4. After installing the plugin run commmand: ionic cordova platform add android
+5. Run the projec using command: ionic cordova run android
