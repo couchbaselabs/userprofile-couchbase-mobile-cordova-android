@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 
-declare var CouchbaseLitePlugin: any;
+declare var CBL: any;
 
 @Component({
   selector: 'app-login',
@@ -25,12 +25,12 @@ export class LoginComponent implements OnInit {
   onSubmit() {
 
     const config = {
-      dbName: this.email,
-      directory: "couchdb"
+      directory: 'couchdb',
+      encryptionKey: '',
     };
 
-    CouchbaseLitePlugin.createDatabase(config, (result: any) => {
-      console.log("Database Initialized : " + result);
+    CBL.createDatabase(this.email, config, (result: any) => {
+      console.log('Database Initialized : ' + result);
 
       this.sharedService.setDatabaseName(this.email);
       this.router.navigate(['/home']);

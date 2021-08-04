@@ -5,7 +5,7 @@ import { SharedService } from '../shared.service';
 import { AlertController } from '@ionic/angular';
 
 
-declare var CouchbaseLitePlugin: any;
+declare var CBL: any;
 
 
 @Component({
@@ -31,33 +31,21 @@ export class HomeComponent implements OnInit {
 
   loadProfile() {
 
-    const params = {
-      dbName: this.email,
-      docId: "user::" + this.email
-    };
+    const dbName = this.email;
+    const docId = 'user::' + this.email;
 
-    CouchbaseLitePlugin.getDocument(params, (result: any) => {
+    CBL.getDocument(docId, dbName, (result: any) => {
       if (result) {
         this.address = result.address;
         this.name = result.name;
 
         if (result.profilePic) {
-
-          const params = {
-            dbName: this.email,
-            blob: result.profilePic
-          }
-
-          CouchbaseLitePlugin.getBlob(params, (base64: string) => {
-
-            this.profilePic = base64;
-
+          CBL.getBlob(dbName, result.profilePic, (base64: any) => {
+            this.profilePic = base64.content;
           }, (err: any) => {
-            console.error(err)
+            console.error(err);
           });
         }
-
-
       }
     }, (err: any) => {
       console.error(err);
@@ -72,7 +60,7 @@ export class HomeComponent implements OnInit {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-    }
+    };
 
     this.camera.getPicture(options).then((base64) => {
 
@@ -82,41 +70,38 @@ export class HomeComponent implements OnInit {
   }
 
   async saveProfile() {
+    const docId = 'user::' + this.email;
+    const dbName = this.email;
 
     if (this.profilePic) {
-      const config = {
-        dbName: this.email,
-        imageData: this.profilePic,
-        contentType: 'image/jpeg'
+
+      const document = {
+        name: this.name,
+        address: this.address
       };
 
-      CouchbaseLitePlugin.setBlob(config, (blob: any) => {
+      CBL.saveDocument(docId, document, dbName, (result: any) => {
 
-        const params = {
-          dbName: this.email,
-          docId: "user::" + this.email,
-          document: {
-            name: this.name,
-            address: this.address,
-            profilePic: blob
-          }
-        }
+        if (result === 'OK') {
 
-        CouchbaseLitePlugin.saveDocument(params, async (result: any) => {
+          const key = 'profilePic';
+          const contentType = 'image/jpeg';
+          const blobData = this.profilePic;
 
-          if (result == 'OK') {
+          CBL.mutableDocumentSetBlob(docId, dbName, key, contentType, blobData, async (blob: any) => {
+
             const alert = await this.alertController.create({
               header: 'Application Message',
               subHeader: '',
               message: 'Profile updated successfully',
               buttons: ['OK']
             });
-            await alert.present();
-          }
 
-        }, (err: any) => {
-          console.error(err);
-        });
+            await alert.present();
+          }, (err: any) => {
+            console.error(err);
+          });
+        }
 
       }, (err: any) => {
         console.error(err);
@@ -134,10 +119,7 @@ export class HomeComponent implements OnInit {
   }
 
   addChangeListener() {
-    const params = {
-      dbName: this.email
-    }
-    CouchbaseLitePlugin.addChangeListener(params, (result: any) => {
+    CBL.dbAddListener(this.email, null, (result: any) => {
       if (result) {
         console.log(result);
       }
@@ -149,15 +131,11 @@ export class HomeComponent implements OnInit {
 
   async logout() {
 
-    const params = {
-      dbName: this.email
-    };
-
-    CouchbaseLitePlugin.removeChangeListener(params, (result: any) => {
-      CouchbaseLitePlugin.closeDatabase(params, (result: any) => {
+    CBL.dbRemoveListener(this.email, (result: any) => {
+      CBL.closeDatabase(this.email, (result: any) => {
         this.router.navigate(['/login']);
       }, (err: any) => {
-        console.error(err)
+        console.error(err);
       });
     }, (err: any) => {
       console.error(err);
