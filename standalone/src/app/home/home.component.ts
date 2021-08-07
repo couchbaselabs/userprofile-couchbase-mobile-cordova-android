@@ -73,53 +73,51 @@ export class HomeComponent implements OnInit {
     const docId = 'user::' + this.email;
     const dbName = this.email;
 
-    if (this.profilePic) {
 
-      const document = {
-        name: this.name,
-        address: this.address
-      };
+    const document = {
+      name: this.name,
+      address: this.address
+    };
 
-      CBL.saveDocument(docId, document, dbName, (result: any) => {
+    CBL.saveDocument(docId, document, dbName, (result: any) => {
 
-        if (result === 'OK') {
+      if (result === 'OK') {
 
+        if (this.profilePic) {
           const key = 'profilePic';
           const contentType = 'image/jpeg';
           const blobData = this.profilePic;
 
-          CBL.mutableDocumentSetBlob(docId, dbName, key, contentType, blobData, async (blob: any) => {
-
-            const alert = await this.alertController.create({
-              header: 'Application Message',
-              subHeader: '',
-              message: 'Profile updated successfully',
-              buttons: ['OK']
-            });
-
-            await alert.present();
+          CBL.mutableDocumentSetBlob(docId, dbName, key, contentType, blobData, (blob: any) => {
+            this.presentAlert();
           }, (err: any) => {
             console.error(err);
           });
+        } else {
+          this.presentAlert();
         }
+      }
 
-      }, (err: any) => {
-        console.error(err);
-      });
-
-    } else {
-      const alert = await this.alertController.create({
-        header: 'Application Message',
-        subHeader: '',
-        message: 'Please choose a profile picture.',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
+    }, (err: any) => {
+      console.error(err);
+    });
   }
 
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Application Message',
+      subHeader: '',
+      message: 'Profile updated successfully',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  } 
+
   addChangeListener() {
-    CBL.dbAddListener(this.email, null, (result: any) => {
+    CBL.dbAddListener(this.email, function() {
+
+    }, (result: any) => {
       if (result) {
         console.log(result);
       }

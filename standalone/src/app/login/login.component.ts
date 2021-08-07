@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 
@@ -9,7 +9,7 @@ declare var CBL: any;
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
 
   email: string;
@@ -17,15 +17,15 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
-  ngOnInit() {
-    this.email = "";
-    this.password = "";
+  ionViewDidEnter() {
+    this.email = null;
+    this.password = null;
   }
 
   onSubmit() {
 
     const config = {
-      directory: 'couchdb',
+      directory: 'couchbase',
       encryptionKey: '',
     };
 
