@@ -15,7 +15,6 @@ export class SharedService {
   }
 
   getDatabaseName() {
-    return 'a@a.com';
-    //return this.databaseName;
+    return this.databaseName;
   }
 }

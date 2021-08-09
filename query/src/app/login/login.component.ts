@@ -21,8 +21,8 @@ export class LoginComponent {
   constructor(private router: Router, private sharedService: SharedService, private file: File, private zip: Zip, private platform: Platform) { }
 
   ionViewDidEnter() {
-    this.email = 'a@a.com';
-    this.password = '123';
+    this.email =  null;
+    this.password = null;
   }
 
   ngOnInit() {
