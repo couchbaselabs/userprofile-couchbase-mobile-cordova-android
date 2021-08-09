@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
+declare var CBL: any;
+
 @Component({
   selector: 'app-modalpage',
   templateUrl: './modalpage.component.html',
@@ -8,13 +10,25 @@ import { ModalController } from '@ionic/angular';
 })
 export class ModalpageComponent implements OnInit {
 
-  
-  universities: any =  [{"name": 'kwakwa'}];
+
+  universities: any = [];
   searchText: string;
 
   constructor(public modalController: ModalController) { }
 
   ngOnInit() {
+
+    let dbName = 'universities';
+    let query = "SELECT * FROM universities";
+    CBL.query(dbName, query, (rs) => {
+      console.log(rs);
+      if (rs && rs.length) {
+        this.universities = rs;
+      }
+    }, (err) => {
+      console.log(err)
+    });
+
 
   }
 
@@ -22,13 +36,24 @@ export class ModalpageComponent implements OnInit {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
-      'result': university
+      'result': university?.universities
     });
   }
 
   onInput(event: any) {
 
-    alert(event.target.value);
+    let searchText = event.target.value;
+ 
+    let dbName = 'universities';
+    let query = "SELECT * FROM universities WHERE name like %" + searchText + "%";
+    CBL.query(dbName, query, (rs) => {
+      console.log(rs);
+      if (rs && rs.length) {
+        this.universities = rs;
+      }
+    }, (err) => {
+      console.log(err)
+    });
 
   }
 
