@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss(null)">
+        <ion-icon slot="icon-only" name="arrow-back" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Choose University</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+<ion-searchbar
+  (ionInput)="onInput($event)"   
+  (ionCancel)="onCancel($event)" animated placeholder="Search...">
+  
+</ion-searchbar>
+
+
+  <ion-list>
+    <ion-item *ngFor="let uni of universities" (click)="pickUni(uni)">
+      <ion-label >{{uni.name}}</ion-label>
+    </ion-item>
+  
+  </ion-list>
+</ion-content>
