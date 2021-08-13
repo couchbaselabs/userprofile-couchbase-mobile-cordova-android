@@ -2,27 +2,26 @@
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-button (click)="dismiss(null)">
-        <ion-icon slot="icon-only" name="arrow-back" ></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Choose University</ion-title>
   </ion-toolbar>
 </ion-header>
 
- 
-<ion-searchbar
-  (ionChange)="onInput($event)"  debounce="500" 
-  (ionCancel)="onCancel($event)" animated placeholder="Search...">
-  
+
+<ion-searchbar (ionChange)="onInput($event)" debounce="800" animated placeholder="Search University...">
+
 </ion-searchbar>
 
 <ion-content>
- 
-
-  <ion-list>
+  <div style="text-align:center; padding:20px;" *ngIf="!universities || !universities.length">
+    <ion-text >No results found.</ion-text>
+  </div>
+  <ion-list *ngIf="universities && universities.length">
     <ion-item *ngFor="let uni of universities" (click)="pickUni(uni)">
-      <ion-label >{{uni.universities.name}}</ion-label>
+      <ion-label>{{uni.universities.name}}</ion-label>
     </ion-item>
-  
+
   </ion-list>
 </ion-content>

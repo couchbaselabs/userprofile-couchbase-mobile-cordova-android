@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 declare var CBL: any;
 
@@ -10,55 +10,59 @@ declare var CBL: any;
 })
 export class ModalpageComponent implements OnInit {
 
-
   universities: any = [];
   searchText: string;
 
-  constructor(public modalController: ModalController) { }
+  loading: any = null;
+
+  constructor(public modalController: ModalController, public loadingController: LoadingController, public zone: NgZone) { }
 
   ngOnInit() {
-
-    let dbName = 'universities';
-    let query = "SELECT * FROM universities";
-    CBL.query(dbName, query, (rs) => {
-      console.log(rs);
-      if (rs && rs.length) {
-        this.universities = rs;
-      }
-    }, (err) => {
-      console.log(err)
-    });
-
 
   }
 
   dismiss(university: any) {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
       'result': university?.universities
     });
   }
 
-  onInput(event: any) {
+  async onInput(event: any) {
 
     let searchText = event.target.value;
- 
-    let dbName = 'universities';
-    let query = "SELECT * FROM universities WHERE name like %" + searchText + "%";
-    CBL.query(dbName, query, (rs) => {
-      console.log(rs);
-      if (rs && rs.length) {
-        this.universities = rs;
-      }
-    }, (err) => {
-      console.log(err)
+
+    if (searchText && searchText.trim() != "") {
+      await this.presentLoading();
+
+      let dbName = 'universities';
+      let query = "SELECT * FROM universities WHERE LOWER(name) LIKE LOWER('%" + searchText + "%') AND country = 'United States'";
+
+      CBL.query(dbName, query, async (rs) => {
+          this.universities = rs;
+          await this.dismissLoading();
+      }, (err) => {
+        this.dismissLoading(); 
+        console.log(err)
+      });
+
+    } else {
+      this.universities = [];
+    }
+
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Please wait...'
     });
-
+    await this.loading.present();
   }
 
-  onCancel(event: any) {
+
+  async dismissLoading() {
+    await this.loading.dismiss().then(() => console.log('dismissed'));
   }
+
 
   pickUni(university: any) {
     this.dismiss(university);
