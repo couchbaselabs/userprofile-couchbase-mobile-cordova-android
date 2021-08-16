@@ -82,7 +82,8 @@ export class HomeComponent implements OnInit {
     const document = {
       name: this.name,
       address: this.address,
-      university: this.university
+      university: this.university,
+      type: "user"
     };
 
     CBL.saveDocument(docId, document, dbName, (result: any) => {
@@ -154,7 +155,7 @@ export class HomeComponent implements OnInit {
 
     const { data } = await modal.onDidDismiss();
     
-    if(data && data.result) {
+    if (data && data.result) {
       this.university = data.result.name;
     }
 

@@ -76,7 +76,8 @@ export class HomeComponent implements OnInit {
 
     const document = {
       name: this.name,
-      address: this.address
+      address: this.address,
+      type: "user"
     };
 
     CBL.saveDocument(docId, document, dbName, (result: any) => {
