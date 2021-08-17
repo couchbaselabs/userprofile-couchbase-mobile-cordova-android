@@ -10,13 +10,20 @@
 </ion-header>
 
 
-<ion-searchbar (ionChange)="onInput($event)" debounce="800" animated placeholder="Search University...">
+<div>
+  <ion-searchbar [(ngModel)]="nameSearchText" placeholder="University name..."></ion-searchbar>
+</div>
+<div>
+  <ion-searchbar [(ngModel)]="countrySearchText" placeholder="Country (Optional)" ></ion-searchbar>
+</div>
+<div style="text-align: center;">  
+  <ion-button (click)="search()">Lookup</ion-button>
+</div>
 
-</ion-searchbar>
 
 <ion-content>
   <div style="text-align:center; padding:20px;" *ngIf="!universities || !universities.length">
-    <ion-text >No results found.</ion-text>
+    <ion-text>No results found.</ion-text>
   </div>
   <ion-list *ngIf="universities && universities.length">
     <ion-item *ngFor="let uni of universities" (click)="pickUni(uni)">

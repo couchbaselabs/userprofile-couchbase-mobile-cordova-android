@@ -15,6 +15,7 @@ declare var CBL: any;
 export class LoginComponent {
 
 
+  externalDBName = "universities";
   email: string;
   password: string;
 
@@ -22,26 +23,25 @@ export class LoginComponent {
 
   ionViewDidEnter() {
     this.email =  null;
-    this.password = null;
+    this.password = null; 
   }
 
   ngOnInit() {
 
-    let databaseName = "universities";
-    this.platform.ready().then(() => {
+    let zipfileName = this.externalDBName + ".zip";
 
-      let databaseDir = databaseName + ".cblite2";
+    this.platform.ready().then(() => { 
+      
+      let databaseDir = "couchbase/" + this.externalDBName + ".cblite2";
       this.file.checkDir(this.file.dataDirectory, databaseDir).then(rs => {
 
-        this.initializeUniversityDB();
+          this.initializeUniversityDB();
 
       }).catch(err => {
-
-        let zipfileName = databaseName + ".zip";
-
+       
         // path to place database zip file = src/assets/resource/
-
         // ionic automatically copies our asset to www directory
+
         let sourceDir = this.file.applicationDirectory + "www/assets/resource/";
         let targetDir = this.file.externalCacheDirectory;
 
@@ -49,8 +49,17 @@ export class LoginComponent {
         this.file.copyFile(sourceDir, zipfileName, targetDir, zipfileName).then(rs => {
           this.zip.unzip(rs.nativeURL, this.file.dataDirectory).then((resultCode) => {
             if (resultCode != -1) {
-              this.initializeUniversityDB();
-              this.createUniversityDatabaseIndexes();
+
+              let currentConfig = { 'encryptionKey': '', 'directory' : ''}
+              let newConfig = { 'encryptionKey': '', 'directory' : 'couchbase'}
+
+            
+              CBL.copyDatabase(this.externalDBName, currentConfig, this.externalDBName, newConfig, (result: any) => {
+                  this.createUniversityDatabaseIndexes();
+              }, (err: any) => {
+                console.log(err);
+              });
+
             } else {
               console.error("Could not unzip file.");
             }
@@ -65,6 +74,18 @@ export class LoginComponent {
     });
 
   }
+  initializeUniversityDB() {
+    const config = {
+      directory: 'couchbase',
+      encryptionKey: '',
+    };
+
+    CBL.createDatabase(this.externalDBName, config, (result: any) => {
+      console.log('University database Initialized : ' + result);
+    }, (err: any) => {
+      console.log(err);
+    });
+  }
   
   createUniversityDatabaseIndexes() {
 
@@ -72,18 +93,8 @@ export class LoginComponent {
     let indexName = "nameLocationIndex";
     let indexes = ['name','location'];
 
-
     CBL.createValueIndex(dbName, indexName, indexes, (result: any) => {
       console.log('University database Index created: ' + result);
-    }, (err: any) => {
-      console.log(err);
-    });
-  }
-
-  initializeUniversityDB() {
-    let dbName = "universities";
-    CBL.createDatabase(dbName, null, (result: any) => {
-      console.log('University database Initialized : ' + result);
     }, (err: any) => {
       console.log(err);
     });

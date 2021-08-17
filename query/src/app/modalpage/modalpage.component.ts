@@ -11,7 +11,8 @@ declare var CBL: any;
 export class ModalpageComponent implements OnInit {
 
   universities: any = [];
-  searchText: string;
+  nameSearchText: string;
+  countrySearchText: string;
 
   loading: any = null;
 
@@ -27,28 +28,35 @@ export class ModalpageComponent implements OnInit {
     });
   }
 
-  async onInput(event: any) {
 
-    let searchText = event.target.value;
-
-    if (searchText && searchText.trim() != "") {
+  async search() {
+    if (this.nameSearchText && this.nameSearchText.trim() != "") {
       await this.presentLoading();
 
       let dbName = 'universities';
-      let query = "SELECT * FROM universities WHERE LOWER(name) LIKE LOWER('%" + searchText + "%') AND country = 'United States'";
 
-      CBL.query(dbName, query, async (rs) => {
-          this.universities = rs;
-          await this.dismissLoading();
+      let whereExpr = "LOWER(name) LIKE '%" + this.nameSearchText.toLowerCase() + "%'";
+
+      if (this.countrySearchText != null && this.countrySearchText != "") {
+        let countryQueryExpr = "LOWER(country) LIKE '%" + this.countrySearchText.toLowerCase() + "%'";
+        whereExpr += " AND " + countryQueryExpr;
+      }
+
+      let queryStr = "SELECT * FROM universities WHERE " + whereExpr;
+
+      CBL.query(dbName, queryStr, async (rs) => {
+        this.zone.run(() => {
+          this.universities = rs; 
+        });
+        await this.dismissLoading();
       }, (err) => {
-        this.dismissLoading(); 
-        console.log(err)
+        this.dismissLoading();
+        console.log(err);
       });
 
     } else {
       this.universities = [];
     }
-
   }
 
   async presentLoading() {
