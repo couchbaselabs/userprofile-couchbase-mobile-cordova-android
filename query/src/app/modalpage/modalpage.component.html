@@ -16,6 +16,7 @@
 <div>
   <ion-searchbar [(ngModel)]="countrySearchText" placeholder="Country (Optional)" ></ion-searchbar>
 </div>
+
 <div style="text-align: center;">  
   <ion-button (click)="search()">Lookup</ion-button>
 </div>
@@ -27,7 +28,11 @@
   </div>
   <ion-list *ngIf="universities && universities.length">
     <ion-item *ngFor="let uni of universities" (click)="pickUni(uni)">
-      <ion-label>{{uni.universities.name}}</ion-label>
+      <ion-label>
+        <h2>{{uni.universities.name}}</h2>
+        <p>{{uni.universities.country}}</p>
+        <p>{{uni.universities?.web_pages[0]}}</p>
+      </ion-label>
     </ion-item>
 
   </ion-list>
