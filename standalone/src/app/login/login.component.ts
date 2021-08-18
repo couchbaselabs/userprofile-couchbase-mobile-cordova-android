@@ -29,7 +29,7 @@ export class LoginComponent {
       encryptionKey: '',
     };
 
-    CBL.createDatabase(this.email, config, (result: any) => {
+    CBL.createOrOpenDatabase(this.email, config, (result: any) => {
       console.log('Database Initialized : ' + result);
 
       this.sharedService.setDatabaseName(this.email);
