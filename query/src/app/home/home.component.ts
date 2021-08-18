@@ -137,11 +137,7 @@ export class HomeComponent implements OnInit {
   logout() {
       CBL.dbRemoveListener(this.email, (result: any) => {
        CBL.closeDatabase(this.email, (result: any) => {
-        CBL.closeDatabase('universities', (result: any) => {
-          this.router.navigate(['/login']);
-        }, (err: any) => {
-          console.error(err);
-        });
+         this.router.navigate(['/login']);
        }, (err: any) => {
          console.error(err);
        });
