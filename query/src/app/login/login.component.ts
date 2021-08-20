@@ -75,12 +75,9 @@ export class LoginComponent {
 
   }
   initializeUniversityDB() {
-    const config = {
-      directory: 'couchbase',
-      encryptionKey: '',
-    };
 
-    CBL.createOrOpenDatabase(this.externalDBName, config, (result: any) => {
+    let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: ''});
+    CBL.createOrOpenDatabase(config, (result: any) => {
       console.log('University database Initialized : ' + result);
     }, (err: any) => {
       console.log(err);
@@ -102,12 +99,8 @@ export class LoginComponent {
 
   onSubmit() {
 
-    const config = {
-      directory: 'couchbase',
-      encryptionKey: '',
-    };
-
-    CBL.createOrOpenDatabase(this.email, config, (result: any) => {
+    let config = new CBL.DatabaseConfiguration(this.email, { directory: 'couchbase', encryptionKey: ''});
+    CBL.createOrOpenDatabase(config, (result: any) => {
       console.log('Database Initialized : ' + result);
 
       this.sharedService.setDatabaseName(this.email);

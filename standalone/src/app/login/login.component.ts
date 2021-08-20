@@ -24,12 +24,9 @@ export class LoginComponent {
 
   onSubmit() {
 
-    const config = {
-      directory: 'couchbase',
-      encryptionKey: '',
-    };
+    let config = new CBL.DatabaseConfiguration(this.email, { directory: 'couchbase', encryptionKey: ''});
 
-    CBL.createOrOpenDatabase(this.email, config, (result: any) => {
+    CBL.createOrOpenDatabase(config, (result: any) => {
       console.log('Database Initialized : ' + result);
 
       this.sharedService.setDatabaseName(this.email);
