@@ -20,7 +20,8 @@ This version of app extends the "query" version of the app and demonstrates basi
 
 ## Pre-requisites
 * [Ionic CLI](https://ionicframework.com/docs/cli) >= v6.16.0
-* [Cordova CLI](https://github.com/apache/cordova-cli) >= 9.0.0
+* [Cordova CLI](https://github.com/apache/cordova-cli) >= v10.0.0
+* Cordova Platforms: android 9.1.0
 * [angular/CLI](https://angular.io/cli) >= 12.0.0
 * [Android Studio 4.1 or above](https://developer.android.com/studio)
 * Android device or emulator running API level 29 or above
