@@ -34,7 +34,7 @@ export class LoginComponent {
 
       CBL.databaseExists(config, result=> {
         if (result) {
-          this.initializeUniversityDB();
+          this.openUniversityDatabase();
         } else {
 
           // path to place database zip file = src/assets/resource/
@@ -73,7 +73,7 @@ export class LoginComponent {
   }
 
 
-  initializeUniversityDB() {
+  openUniversityDatabase() {
 
     let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
     CBL.createOrOpenDatabase(config, (result: any) => {
