@@ -122,15 +122,20 @@ export class HomeComponent implements OnInit {
   }
 
   addChangeListener() {
-    CBL.dbAddListener(this.email, function () {
 
-    }, (result: any) => {
+    //attaching function to window object to make it global.
+    (window as any).onDbChange = function(events) {
+      console.log(events);
+    }
+
+    CBL.dbAddListener(this.email, 'onDbChange', (result: any) => {
       if (result) {
         console.log(result);
       }
     }, (err: any) => {
       console.error(err);
     });
+    
   }
 
 
