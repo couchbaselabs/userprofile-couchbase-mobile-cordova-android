@@ -32,7 +32,7 @@ export class LoginComponent {
       let zipfileName = this.externalDBName + ".zip";
       let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
 
-      CBL.databaseExists(config, result=> {
+      CBL.databaseExists(config, result => {
         if (result) {
           this.openUniversityDatabase();
         } else {

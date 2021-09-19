@@ -85,7 +85,6 @@ export class HomeComponent implements OnInit {
       university: this.university,
       type: "user"
     };
-
     CBL.saveDocument(docId, document, dbName, (result: any) => {
 
       if (result === 'OK') {
