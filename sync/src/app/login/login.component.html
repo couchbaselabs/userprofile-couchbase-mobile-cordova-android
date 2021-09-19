@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-title>Query User Profile Sample</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <img src="assets/icon/logo.png" class="logo" />
+
+  <form novalidate #form="ngForm">
+
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input autocomplete="off" [(ngModel)]="email" name="email" type="text" required #emailCtrl="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" ></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="emailCtrl.touched && emailCtrl.errors" lines="none">
+      <ion-text color="danger" *ngIf="emailCtrl.errors?.required" >Email is required.</ion-text>
+      <ion-text color="danger" *ngIf="emailCtrl.errors?.pattern">Invalid email.</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input autocomplete="off" [(ngModel)]="password" name="password" type="password" required #passwordCtrl="ngModel"></ion-input>    
+    </ion-item>
+
+    <ion-item *ngIf="!passwordCtrl.valid && passwordCtrl.touched" lines="none">
+      <ion-text color="danger" >Password is required.</ion-text>
+    </ion-item>
+
+    <div class="btm-buttons">
+      <ion-button class="ion-margin-top" type="submit" expand="block" color="tertiary" fill="solid"
+        [disabled]="!form.valid"
+        (click)="onSubmit()">
+        Login
+      </ion-button>
+    </div>
+
+  </form>
+</ion-content>

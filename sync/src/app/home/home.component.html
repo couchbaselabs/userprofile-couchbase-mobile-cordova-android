@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="primary">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="exit-outline" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Edit Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card color="tertiary">
+    <ion-card-content style="text-align: center;">
+      <div class="avatar-wrapper">
+        <img src="assets/icon/pen.png" class="edit-btn"   (click)="editPic()"/>
+        <ion-avatar style="margin: 0px auto;" class="avatar">
+          <img class="avatar-icon" *ngIf="!profilePic" style="background: white;" src="assets/icon/avatar.png">
+          <img class="avatar-icon" *ngIf="profilePic" [src]="'data:image/jpeg;base64,' + profilePic">
+        </ion-avatar>
+      </div>
+      <br />
+      <ion-label style="font-size: 14px;">
+        <p>{{name}}</p>
+        <p>{{email}}</p>
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="fixed">Email</ion-label>
+          <ion-input autocomplete="off" [(ngModel)]="email" name="email" type="email" disabled required #emailCtrl="ngModel"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="fixed">Name</ion-label>
+          <ion-input autocomplete="off" [(ngModel)]="name" name="name" type="text" required #nameCtrl="ngModel"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="fixed">Address</ion-label>
+          <ion-input autocomplete="off" [(ngModel)]="address" name="address" type="text" required #addressCtrl="ngModel"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="fixed">University</ion-label>
+          
+          <ion-text style="margin-left:8px;" *ngIf="university">{{university}}</ion-text>
+          <ion-text style="margin-left:8px;" *ngIf="!university">N/A</ion-text>
+
+          <ion-button (click)="presentModal()" slot="end"> 
+            <ion-icon slot="start" name="school"></ion-icon>
+             Choose 
+          </ion-button>
+        </ion-item> 
+
+        <ion-button class="ion-margin-top" type="submit" expand="block" color="tertiary" fill="solid"
+          (click)="saveProfile()">
+          Save
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

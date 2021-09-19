@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss(null)">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Choose University</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<div>
+  <ion-searchbar [(ngModel)]="nameSearchText" placeholder="University name..."></ion-searchbar>
+</div>
+<div>
+  <ion-searchbar [(ngModel)]="countrySearchText" placeholder="Country (Optional)" ></ion-searchbar>
+</div>
+
+<div style="text-align: center;">  
+  <ion-button (click)="search()">Lookup</ion-button>
+</div>
+
+
+<ion-content>
+  <div style="text-align:center; padding:20px;" *ngIf="!universities || !universities.length">
+    <ion-text>No results found.</ion-text>
+  </div>
+  <ion-list *ngIf="universities && universities.length">
+    <ion-item *ngFor="let uni of universities" (click)="pickUni(uni)">
+      <ion-label>
+        <h2>{{uni.universities.name}}</h2>
+        <p>{{uni.universities.country}}</p>
+        <p>{{uni.universities?.web_pages[0]}}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
