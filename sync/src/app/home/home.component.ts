@@ -58,10 +58,10 @@ export class HomeComponent implements OnInit {
     //attaching function to window object to make it global.
     (window as any).onQueryChange = function (change) {
       if (change && change.length > 0) {
-        var liveProfile = change[0].userprofile;
-        if (liveProfile) {
+        var livedata = change[0];
+        if (livedata && livedata.userprofile != null) {
           that.zone.run(() => {
-            that.updateView(liveProfile)
+            that.updateView(livedata.userprofile)
           });
         }
       }
