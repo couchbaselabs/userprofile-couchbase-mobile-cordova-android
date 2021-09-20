@@ -38,8 +38,6 @@ export class HomeComponent implements OnInit {
 
   loadProfile() {
 
-
-
     CBL.getDocument(this.docId, this.dbName, (result: any) => {
       if (result) {
         
