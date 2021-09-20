@@ -139,8 +139,8 @@ export class LoginComponent {
 
       var replicatorConfig = CBL.ReplicatorConfiguration(this.sharedService.getDatabaseName(), 'ws://10.0.2.2:4984/' + this.sharedService.getDatabaseName());
       replicatorConfig.continuous = true;
-      replicatorConfig.authenticator = CBL.BasicAuthenticator(this.sharedService.getUserEmail(), 'password');
-      replicatorConfig.channels = ['channel.' + this.sharedService.getUserEmail()];
+      replicatorConfig.authenticator = CBL.BasicAuthenticator(this.email, this.password);
+      replicatorConfig.channels = ['channel.' + this.email];
       replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL;
 
       CBL.replicatorStart(replicatorConfig, (rs) => {
