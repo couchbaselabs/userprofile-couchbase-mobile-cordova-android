@@ -16,14 +16,14 @@ export class LoginComponent {
 
   userProfileDBName = "userprofile";
   externalDBName = "universities";
-  email: string = 'demo@example.com';
+  email: string;
   password: string;
 
   constructor(private router: Router, private sharedService: SharedService, private file: File, private zip: Zip, private platform: Platform) { }
 
   ionViewDidEnter() {
-    this.email =  'demo@example.com';
-    this.password = 'asd';
+    this.email =  null;
+    this.password = null;
   }
 
   ngOnInit() {
@@ -49,8 +49,14 @@ export class LoginComponent {
               if (resultCode != -1) {
 
                 let newConfig = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
-                CBL.copyDatabase(this.externalDBName, newConfig, (result: any) => {
-                  this.createUniversityDatabaseIndexes();
+                CBL.copyDatabase(this.externalDBName, newConfig, async (result: any) => {
+                  let created = await this.openUniversityDatabase();
+                  if (created) {
+                    this.createUniversityDatabaseIndexes();
+                  } else {
+                    console.log('Failed to open external database.');
+                  }
+                  
                 }, (err: any) => {
                   console.log(err);
                 });
@@ -74,12 +80,14 @@ export class LoginComponent {
 
 
   openUniversityDatabase() {
-
-    let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
-    CBL.createOrOpenDatabase(config, (result: any) => {
-      console.log('University database Initialized : ' + result);
-    }, (err: any) => {
-      console.log(err);
+    
+    return new Promise((resolve, reject) => {
+      let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
+      CBL.createOrOpenDatabase(config, (result: any) => {        
+        resolve(true);
+      }, (err: any) => {
+        reject(false);
+      });
     });
   }
 

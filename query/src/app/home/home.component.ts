@@ -21,23 +21,26 @@ export class HomeComponent implements OnInit {
   address: string;
   profilePic: string;
   university: string;
+  docId: string;
+  dbName: string;
 
   constructor(private camera: Camera, private sharedService: SharedService, private router: Router, private alertController: AlertController, public modalController: ModalController) { }
 
 
   ngOnInit() {
 
-    this.email = this.sharedService.getDatabaseName();
+    this.email = this.sharedService.getUserEmail();
+    this.dbName = this.sharedService.getDatabaseName();
+    this.docId = 'user::' + this.email;
     this.loadProfile();
     this.addChangeListener();
   }
 
   loadProfile() {
 
-    const dbName = this.email;
-    const docId = 'user::' + this.email;
 
-    CBL.getDocument(docId, dbName, (result: any) => {
+
+    CBL.getDocument(this.docId, this.dbName, (result: any) => {
       if (result) {
         
         this.name = result.name;
@@ -45,7 +48,7 @@ export class HomeComponent implements OnInit {
         this.university = result.university;
 
         if (result.profilePic) {
-          CBL.getBlob(dbName, result.profilePic, (base64: any) => {
+          CBL.getBlob(this.dbName, result.profilePic, (base64: any) => {
             this.profilePic = base64.content;
           }, (err: any) => {
             console.error(err);
@@ -75,8 +78,6 @@ export class HomeComponent implements OnInit {
   }
 
   async saveProfile() {
-    const docId = 'user::' + this.email;
-    const dbName = this.email;
 
 
     const document = {
@@ -85,7 +86,7 @@ export class HomeComponent implements OnInit {
       university: this.university,
       type: "user"
     };
-    CBL.saveDocument(docId, document, dbName, (result: any) => {
+    CBL.saveDocument(this.docId, document, this.dbName, (result: any) => {
 
       if (result === 'OK') {
 
@@ -94,7 +95,7 @@ export class HomeComponent implements OnInit {
           const contentType = 'image/jpeg';
           const blobData = this.profilePic;
 
-          CBL.mutableDocumentSetBlob(docId, dbName, key, contentType, blobData, (blob: any) => {
+          CBL.mutableDocumentSetBlob(this.docId, this.dbName, key, contentType, blobData, (blob: any) => {
             this.presentAlert();
           }, (err: any) => {
             console.error(err);
@@ -127,7 +128,7 @@ export class HomeComponent implements OnInit {
       console.log(events);
     }
 
-    CBL.dbAddListener(this.email, 'onDbChange', (result: any) => {
+    CBL.dbAddListener(this.dbName, 'onDbChange', (result: any) => {
       if (result) {
         console.log(result);
       }
@@ -139,8 +140,8 @@ export class HomeComponent implements OnInit {
 
 
   logout() {
-      CBL.dbRemoveListener(this.email, (result: any) => {
-       CBL.closeDatabase(this.email, (result: any) => {
+      CBL.dbRemoveListener(this.dbName, (result: any) => {
+       CBL.closeDatabase(this.dbName, (result: any) => {
          this.router.navigate(['/login']);
        }, (err: any) => {
          console.error(err);

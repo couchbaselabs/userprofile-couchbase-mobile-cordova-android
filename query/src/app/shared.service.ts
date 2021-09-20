@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class SharedService {
 
   databaseName: string;
+  userEmail: string;
 
   constructor() { }
 
@@ -16,5 +17,13 @@ export class SharedService {
 
   getDatabaseName() {
     return this.databaseName;
+  }
+
+  setUserEmail(email: string) {
+    this.userEmail = email;
+  }
+
+  getUserEmail() {
+    return this.userEmail;
   }
 }

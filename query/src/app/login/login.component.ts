@@ -14,7 +14,7 @@ declare var CBL: any;
 })
 export class LoginComponent {
 
-
+  userProfileDBName = "userprofile";
   externalDBName = "universities";
   email: string;
   password: string;
@@ -22,7 +22,7 @@ export class LoginComponent {
   constructor(private router: Router, private sharedService: SharedService, private file: File, private zip: Zip, private platform: Platform) { }
 
   ionViewDidEnter() {
-    this.email = null;
+    this.email =  null;
     this.password = null;
   }
 
@@ -49,8 +49,14 @@ export class LoginComponent {
               if (resultCode != -1) {
 
                 let newConfig = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
-                CBL.copyDatabase(this.externalDBName, newConfig, (result: any) => {
-                  this.createUniversityDatabaseIndexes();
+                CBL.copyDatabase(this.externalDBName, newConfig, async (result: any) => {
+                  let created = await this.openUniversityDatabase();
+                  if (created) {
+                    this.createUniversityDatabaseIndexes();
+                  } else {
+                    console.log('Failed to open external database.');
+                  }
+                  
                 }, (err: any) => {
                   console.log(err);
                 });
@@ -74,22 +80,23 @@ export class LoginComponent {
 
 
   openUniversityDatabase() {
-
-    let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
-    CBL.createOrOpenDatabase(config, (result: any) => {
-      console.log('University database Initialized : ' + result);
-    }, (err: any) => {
-      console.log(err);
+    
+    return new Promise((resolve, reject) => {
+      let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
+      CBL.createOrOpenDatabase(config, (result: any) => {        
+        resolve(true);
+      }, (err: any) => {
+        reject(false);
+      });
     });
   }
 
   createUniversityDatabaseIndexes() {
 
-    let dbName = "universities";
     let indexName = "nameLocationIndex";
     let indexExpressions = ['name', 'location'];
 
-    CBL.createValueIndex(dbName, indexName, indexExpressions, (result: any) => {
+    CBL.createValueIndex(this.externalDBName, indexName, indexExpressions, (result: any) => {
       console.log('University database Index created: ' + result);
     }, (err: any) => {
       console.log(err);
@@ -98,11 +105,12 @@ export class LoginComponent {
 
   onSubmit() {
 
-    let config = new CBL.DatabaseConfiguration(this.email, { directory: 'couchbase', encryptionKey: '' });
-    CBL.createOrOpenDatabase(config, (result: any) => {
+    let config = new CBL.DatabaseConfiguration(this.userProfileDBName, { directory: 'userprofile', encryptionKey: '' });
+    CBL.createOrOpenDatabase(config, async (result: any) => {
       console.log('Database Initialized : ' + result);
-
-      this.sharedService.setDatabaseName(this.email);
+      this.sharedService.setUserEmail(this.email);
+      this.sharedService.setDatabaseName(this.userProfileDBName);
+  
       this.router.navigate(['/home']);
 
     }, (err: any) => {
