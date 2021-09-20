@@ -11,7 +11,7 @@ declare var CBL: any;
 })
 export class LoginComponent {
 
-
+  userProfileDBName:string = "userprofile"
   email: string;
   password: string;
 
@@ -24,12 +24,12 @@ export class LoginComponent {
 
   onSubmit() {
 
-    let config = new CBL.DatabaseConfiguration(this.email, { directory: 'couchbase', encryptionKey: ''});
+    let config = new CBL.DatabaseConfiguration(this.userProfileDBName, { directory: 'couchbase', encryptionKey: ''});
 
     CBL.createOrOpenDatabase(config, (result: any) => {
       console.log('Database Initialized : ' + result);
 
-      this.sharedService.setDatabaseName(this.email);
+      this.sharedService.setDatabaseName(this.userProfileDBName);
       this.router.navigate(['/home']);
 
     }, (err: any) => {
