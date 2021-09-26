@@ -112,6 +112,7 @@ export class LoginComponent {
       this.sharedService.setDatabaseName(this.userProfileDBName);
       let replicatorStarted = await this.startPushAndPullReplicationForCurrentUser();
       if (replicatorStarted) {
+        console.log('Replicator started successfully.');
         this.addReplicatorListener();
       }
       this.router.navigate(['/home']);

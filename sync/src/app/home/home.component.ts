@@ -24,8 +24,8 @@ export class HomeComponent implements OnInit {
   docId: string;
   dbName: string;
 
-  constructor(private camera: Camera, private sharedService: SharedService, 
-    private router: Router, private alertController: AlertController, 
+  constructor(private camera: Camera, private sharedService: SharedService,
+    private router: Router, private alertController: AlertController,
     public modalController: ModalController, public zone: NgZone) { }
 
 
@@ -34,21 +34,8 @@ export class HomeComponent implements OnInit {
     this.email = this.sharedService.getUserEmail();
     this.dbName = this.sharedService.getDatabaseName();
     this.docId = 'user::' + this.email;
-    this.loadProfile();
     this.addChangeListener();
     this.addLiveQueryListener();
-  }
-
-  loadProfile() {
-
-    CBL.getDocument(this.docId, this.dbName, (result: any) => {
-      if (result) {
-        this.updateView(result);
-      }
-    }, (err: any) => {
-      console.error(err);
-    });
-
   }
 
   addLiveQueryListener() {
@@ -58,22 +45,22 @@ export class HomeComponent implements OnInit {
     //attaching function to window object to make it global.
     (window as any).onQueryChange = function (change) {
       if (change && change.length > 0) {
-        var livedata = change[0];
-        if (livedata && livedata.userprofile != null) {
+        var liveProfile = change[0].userprofile;
+        if (liveProfile) {
           that.zone.run(() => {
-            that.updateView(livedata.userprofile)
+            that.updateView(liveProfile)
           });
         }
       }
     }
 
-    const query = "Select * from "+ this.dbName +" WHERE email = '"+ this.email + "'";
+    const query = "Select * from " + this.dbName + " WHERE email = '" + this.email + "'";
     CBL.queryAddListener(this.dbName, query, 'onQueryChange', function (rs) { console.log(rs); }, function (err) { console.log(err) });
 
   }
 
   updateView(result: any) {
-    
+
     this.name = result.name;
     this.address = result.address;
     this.university = result.university;
@@ -84,7 +71,7 @@ export class HomeComponent implements OnInit {
       }, (err: any) => {
         console.error(err);
       });
-    }
+    } 
   }
 
   editPic() {
@@ -104,7 +91,8 @@ export class HomeComponent implements OnInit {
   }
 
   async saveProfile() {
-    const document = {
+ 
+    let document = {
       email: this.email,
       name: this.name,
       address: this.address,
@@ -112,28 +100,31 @@ export class HomeComponent implements OnInit {
       type: "user"
     };
 
-    CBL.saveDocument(this.docId, document, this.dbName, (result: any) => {
+    if (this.profilePic) {
+      const contentType = 'image/jpeg';
+      const blobData = this.profilePic;
 
-      if (result === 'OK') {
-
-        if (this.profilePic) {
-          const key = 'profilePic';
-          const contentType = 'image/jpeg';
-          const blobData = this.profilePic;
-
-          CBL.mutableDocumentSetBlob(this.docId, this.dbName, key, contentType, blobData, (blob: any) => {
+      CBL.saveBlob(this.dbName, contentType, blobData,  (blob: any) => {
+        document['profilePic'] = blob;
+        CBL.saveDocument(this.docId, document, this.dbName, (result: any) => {
+          if (result === 'OK') {
             this.presentAlert();
-          }, (err: any) => {
-            console.error(err);
-          });
-        } else {
+          }
+        }, (err: any) => {
+          console.error(err);
+        });
+      }, (err: any) => {
+        console.error(err);
+      });
+    } else {
+      CBL.saveDocument(this.docId, document, this.dbName, (result: any) => {
+        if (result === 'OK') {
           this.presentAlert();
         }
-      }
-
-    }, (err: any) => {
-      console.error(err);
-    });
+      }, (err: any) => {
+        console.error(err);
+      });
+    }
   }
 
   async presentAlert() {
@@ -167,13 +158,13 @@ export class HomeComponent implements OnInit {
 
   logout() {
     CBL.replicationRemoveListener(this.dbName, (result: any) => {
-      console.log('Replicator listener removed.')
+      console.log('Replicator listener removed.');
       CBL.replicatorStop(this.dbName, (result: any) => {
-        console.log('Replicator stopped.')
+        console.log('Replicator stopped.');
         CBL.dbRemoveListener(this.dbName, (result: any) => {
-          console.log('Database listener removed.')
+          console.log('Database listener removed.');
           CBL.closeDatabase(this.dbName, (result: any) => {
-            console.log('Database closed.')
+            console.log('Database closed.');
             this.router.navigate(['/login']);
           }, (err: any) => {
             console.error(err);

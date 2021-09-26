@@ -71,34 +71,36 @@ export class HomeComponent implements OnInit {
     }, (e: any) => console.error(e));
   }
 
+  
   async saveProfile() {
-
-
-    const document = {
+ 
+    let document = {
+      email: this.email,
       name: this.name,
       address: this.address,
       type: "user"
     };
 
+    if (this.profilePic) {
+      const contentType = 'image/jpeg';
+      const blobData = this.profilePic;
+
+      CBL.saveBlob(this.dbName, contentType, blobData,  (blob: any) => {
+        document['profilePic'] = blob;
+        this.saveDocument(document);
+      }, (err: any) => {
+        console.error(err);
+      });
+    } else {
+      this.saveDocument(document);
+    }
+  }
+
+  async saveDocument(document: any){
     CBL.saveDocument(this.docId, document, this.dbName, (result: any) => {
-
       if (result === 'OK') {
-
-        if (this.profilePic) {
-          const key = 'profilePic';
-          const contentType = 'image/jpeg';
-          const blobData = this.profilePic;
-
-          CBL.mutableDocumentSetBlob(this.docId, this.dbName, key, contentType, blobData, (blob: any) => {
-            this.presentAlert();
-          }, (err: any) => {
-            console.error(err);
-          });
-        } else {
-          this.presentAlert();
-        }
+        this.presentAlert();
       }
-
     }, (err: any) => {
       console.error(err);
     });
