@@ -23,7 +23,9 @@ export class LoginComponent {
   }
 
   onSubmit() {
-
+    if (!CBL) {
+      alert('Internal error. Make sure the plugin is installed properly.')
+    }
     let config = new CBL.DatabaseConfiguration(this.userProfileDBName, { directory: 'couchbase', encryptionKey: ''});
 
     CBL.createOrOpenDatabase(config, (result: any) => {

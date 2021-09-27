@@ -30,6 +30,9 @@ export class LoginComponent {
 
     this.platform.ready().then(() => {
       let zipfileName = this.externalDBName + ".zip";
+      if (!CBL) {
+        alert('Internal error. Make sure the plugin is installed properly.')
+      }
       let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
 
       CBL.databaseExists(config, result => {
