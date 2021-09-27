@@ -162,7 +162,7 @@ export class HomeComponent implements OnInit {
       console.log('Replicator listener removed.');
       CBL.replicatorStop(this.dbName, (result: any) => {
         console.log('Replicator stopped.');
-        CBL.queryAddListener(this.dbName, this.liveQuery, (result: any) => {
+        CBL.queryRemoveListener(this.dbName, this.liveQuery, (result: any) => {
           console.log('Query listener removed.');
           CBL.dbRemoveListener(this.dbName, (result: any) => {
             console.log('Database listener removed.');
@@ -171,6 +171,7 @@ export class HomeComponent implements OnInit {
               this.router.navigate(['/login']);
             }, (err: any) => {
               console.error(err);
+              this.router.navigate(['/login']);
             });
           }, (err: any) => {
             console.error(err);
