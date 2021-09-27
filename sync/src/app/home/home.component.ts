@@ -65,10 +65,13 @@ export class HomeComponent implements OnInit {
     this.name = result.name;
     this.address = result.address;
     this.university = result.university;
-
+    
     if (result.profilePic) {
+      var that = this;
       CBL.getBlob(this.dbName, result.profilePic, (base64: any) => {
-        this.profilePic = base64.content;
+        that.zone.run(() => {
+          this.profilePic = base64.content;
+        });
       }, (err: any) => {
         console.error(err);
       });
