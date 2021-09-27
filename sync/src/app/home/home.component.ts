@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { SharedService } from '../shared.service';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { ModalpageComponent } from '../modalpage/modalpage.component';
 
 
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private camera: Camera, private sharedService: SharedService,
     private router: Router, private alertController: AlertController,
-    public modalController: ModalController, public zone: NgZone) { }
+    public modalController: ModalController, public zone: NgZone, private platform :  Platform) { }
 
 
   ngOnInit() {
@@ -37,6 +37,10 @@ export class HomeComponent implements OnInit {
     this.docId = 'user::' + this.email;
     this.addChangeListener();
     this.addLiveQueryListener();
+
+    this.platform.backButton.subscribeWithPriority(9999, () => { //to prevent hardware back button
+      // do nothing here
+    });
   }
 
   addLiveQueryListener() {
