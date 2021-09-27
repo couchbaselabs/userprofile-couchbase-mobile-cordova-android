@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   university: string;
   docId: string;
   dbName: string;
+  liveQuery: string;
 
   constructor(private camera: Camera, private sharedService: SharedService,
     private router: Router, private alertController: AlertController,
@@ -54,8 +55,8 @@ export class HomeComponent implements OnInit {
       }
     }
 
-    const query = "Select * from " + this.dbName + " WHERE email = '" + this.email + "'";
-    CBL.queryAddListener(this.dbName, query, 'onQueryChange', function (rs) { console.log(rs); }, function (err) { console.log(err) });
+    this.liveQuery = "Select * from " + this.dbName + " WHERE email = '" + this.email + "'";
+    CBL.queryAddListener(this.dbName, this.liveQuery, 'onQueryChange', function (rs) { console.log(rs); }, function (err) { console.log(err) });
 
   }
 
@@ -71,7 +72,7 @@ export class HomeComponent implements OnInit {
       }, (err: any) => {
         console.error(err);
       });
-    } 
+    }
   }
 
   editPic() {
@@ -91,7 +92,7 @@ export class HomeComponent implements OnInit {
   }
 
   async saveProfile() {
- 
+
     let document = {
       email: this.email,
       name: this.name,
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit {
       const contentType = 'image/jpeg';
       const blobData = this.profilePic;
 
-      CBL.saveBlob(this.dbName, contentType, blobData,  (blob: any) => {
+      CBL.saveBlob(this.dbName, contentType, blobData, (blob: any) => {
         document['profilePic'] = blob;
         CBL.saveDocument(this.docId, document, this.dbName, (result: any) => {
           if (result === 'OK') {
@@ -161,11 +162,16 @@ export class HomeComponent implements OnInit {
       console.log('Replicator listener removed.');
       CBL.replicatorStop(this.dbName, (result: any) => {
         console.log('Replicator stopped.');
-        CBL.dbRemoveListener(this.dbName, (result: any) => {
-          console.log('Database listener removed.');
-          CBL.closeDatabase(this.dbName, (result: any) => {
-            console.log('Database closed.');
-            this.router.navigate(['/login']);
+        CBL.queryAddListener(this.dbName, this.liveQuery, (result: any) => {
+          console.log('Query listener removed.');
+          CBL.dbRemoveListener(this.dbName, (result: any) => {
+            console.log('Database listener removed.');
+            CBL.closeDatabase(this.dbName, (result: any) => {
+              console.log('Database closed.');
+              this.router.navigate(['/login']);
+            }, (err: any) => {
+              console.error(err);
+            });
           }, (err: any) => {
             console.error(err);
           });
