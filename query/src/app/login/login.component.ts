@@ -35,8 +35,8 @@ export class LoginComponent {
       }
 
       //enabling native logging
-      CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log(result), (error) => console.log(error));
-      
+      CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log('Native Logs Enabled: ' + result), (error) => console.log(error));
+            
       let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
 
       CBL.databaseExists(config, result => {
