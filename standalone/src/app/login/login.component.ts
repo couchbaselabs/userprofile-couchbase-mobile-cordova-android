@@ -26,6 +26,10 @@ export class LoginComponent {
     if (!CBL) {
       alert('Internal error. Make sure the plugin is installed properly.')
     }
+
+    //enabling native logging
+    CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log(result), (error) => console.log(error));
+    
     let config = new CBL.DatabaseConfiguration(this.userProfileDBName, { directory: 'couchbase', encryptionKey: ''});
 
     CBL.createOrOpenDatabase(config, (result: any) => {
