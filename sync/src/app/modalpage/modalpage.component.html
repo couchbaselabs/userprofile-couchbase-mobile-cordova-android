@@ -18,7 +18,7 @@
 </div>
 
 <div style="text-align: center;">  
-  <ion-button (click)="search()">Lookup</ion-button>
+  <ion-button (click)="search()" [disabled]="!nameSearchText">Lookup</ion-button>
 </div>
 
 
