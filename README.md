@@ -109,3 +109,22 @@ cd  /path/to/cloned-repo/standalone
  ```bash
  ionic cordova run android
  ```
+## Troubleshooting Tips
+
+* Confirm the version of the tools as matches what's specified in the Prerequisites section
+* Sometimes, it helps to start from scratch, uninstall and to reinstall the plugin
+
+```bash
+ionic cordova plugin rm cordova.plugin.couchbaselite
+
+ionic cordova platform rm android
+
+ionic cordova platform add android
+
+ionic cordova build android
+
+ionic cordova plugin add https://github.com/rajagp/couchbase-lite-cordova-plugin-android.git
+
+
+```
+Then follow instructions to reinstall the Couchbase Lite framework
