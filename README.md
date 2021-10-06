@@ -2,6 +2,9 @@
 Example of a simple Ionic app that uses Couchbase Lite as embedded datastore for offline data storage and Sync Gateway/Couchbase Server for remote data sync.
 The app uses a reference implementation of a Cordova native plugin that exports a subset of couchbase lite native APIs to Javascript.
 
+**NOTE** that Ionic now recommends [capacitor](https://capacitorjs.com) for native access within Ionic apps. However, a cordova plugin can also be used within Ionic apps. 
+
+For enterprise apps, there is a [Ionic plugin](https://ionic.io/integrations/couchbase-lite) for couchbase Lite.
 
 # Folder Structure
 
