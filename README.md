@@ -6,6 +6,8 @@ The app uses a reference implementation of a Cordova native plugin that exports 
 
 For enterprise apps, there is a [Ionic plugin](https://ionic.io/integrations/couchbase-lite) for couchbase Lite.
 
+**LICENSE**: The source code for the app and cordova plugin is Apache-licensed, as specified in LICENSE. However, the usage of Couchbase Lite will be guided by the terms and conditions specified in Couchbase's Enterprise or Community License agreements.
+
 # Folder Structure
 
 # standalone
