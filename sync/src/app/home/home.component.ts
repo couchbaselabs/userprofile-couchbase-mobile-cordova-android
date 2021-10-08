@@ -165,7 +165,7 @@ export class HomeComponent implements OnInit {
 
 
   logout() {
-    CBL.replicationRemoveListener(this.dbName, (result: any) => {
+    CBL.replicatorRemoveListener(this.dbName, (result: any) => {
       console.log('Replicator listener removed.');
       CBL.replicatorStop(this.dbName, (result: any) => {
         console.log('Replicator stopped.');

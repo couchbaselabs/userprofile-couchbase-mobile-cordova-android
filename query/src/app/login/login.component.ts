@@ -37,9 +37,9 @@ export class LoginComponent {
       //enabling native logging
       CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log('Native Logs Enabled: ' + result), (error) => console.log(error));
             
-      let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
+      let config = new CBL.DatabaseConfiguration({ directory: 'couchbase', encryptionKey: '' });
 
-      CBL.databaseExists(config, result => {
+      CBL.databaseExists(this.externalDBName, config, result => {
         if (result) {
           this.openUniversityDatabase();
         } else {
@@ -55,8 +55,8 @@ export class LoginComponent {
 
               if (resultCode != -1) {
 
-                let newConfig = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
-                CBL.copyDatabase(this.externalDBName, newConfig, async (result: any) => {
+                let newConfig = new CBL.DatabaseConfiguration({ directory: 'couchbase', encryptionKey: '' });
+                CBL.copyDatabase(this.externalDBName, this.externalDBName, newConfig, async (result: any) => {
                   let created = await this.openUniversityDatabase();
                   if (created) {
                     this.createUniversityDatabaseIndexes();
@@ -89,8 +89,8 @@ export class LoginComponent {
   openUniversityDatabase() {
     
     return new Promise((resolve, reject) => {
-      let config = new CBL.DatabaseConfiguration(this.externalDBName, { directory: 'couchbase', encryptionKey: '' });
-      CBL.createOrOpenDatabase(config, (result: any) => {        
+      let config = new CBL.DatabaseConfiguration({ directory: 'couchbase', encryptionKey: '' });
+      CBL.createOrOpenDatabase(this.externalDBName, config, (result: any) => {        
         resolve(true);
       }, (err: any) => {
         reject(false);
@@ -112,8 +112,8 @@ export class LoginComponent {
 
   onSubmit() {
 
-    let config = new CBL.DatabaseConfiguration(this.userProfileDBName, { directory: 'userprofile', encryptionKey: '' });
-    CBL.createOrOpenDatabase(config, async (result: any) => {
+    let config = new CBL.DatabaseConfiguration({ directory: 'userprofile', encryptionKey: '' });
+    CBL.createOrOpenDatabase(this.userProfileDBName, config, async (result: any) => {
       console.log('Database Initialized : ' + result);
       this.sharedService.setUserEmail(this.email);
 

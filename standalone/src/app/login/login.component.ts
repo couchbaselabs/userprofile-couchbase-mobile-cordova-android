@@ -30,9 +30,9 @@ export class LoginComponent {
     //enabling native logging
     CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log('Native Logs Enabled: ' + result), (error) => console.log(error));
 
-    let config = new CBL.DatabaseConfiguration(this.userProfileDBName, { directory: 'couchbase', encryptionKey: ''});
+    let config = new CBL.DatabaseConfiguration({ directory: 'couchbase', encryptionKey: ''});
 
-    CBL.createOrOpenDatabase(config, (result: any) => {
+    CBL.createOrOpenDatabase(this.userProfileDBName, config, (result: any) => {
       console.log('Database Initialized : ' + result);
 	  this.sharedService.setUserEmail(this.email);
       this.sharedService.setDatabaseName(this.userProfileDBName);
