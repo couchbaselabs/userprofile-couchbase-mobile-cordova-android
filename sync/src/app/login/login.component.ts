@@ -22,7 +22,7 @@ export class LoginComponent {
   constructor(private router: Router, private sharedService: SharedService, private file: File, private zip: Zip, private platform: Platform) { }
 
   ionViewDidEnter() {
-    this.email =  null;
+    this.email = null;
     this.password = null;
   }
 
@@ -36,7 +36,7 @@ export class LoginComponent {
 
       //enabling native logging
       CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log('Native Logs Enabled: ' + result), (error) => console.log(error));
-      
+
       let config = new CBL.DatabaseConfiguration({ directory: 'couchbase', encryptionKey: '' });
 
       CBL.databaseExists(this.externalDBName, config, result => {
@@ -63,7 +63,7 @@ export class LoginComponent {
                   } else {
                     console.log('Failed to open external database.');
                   }
-                  
+
                 }, (err: any) => {
                   console.log(err);
                 });
@@ -87,10 +87,10 @@ export class LoginComponent {
 
 
   openUniversityDatabase() {
-    
+
     return new Promise((resolve, reject) => {
       let config = new CBL.DatabaseConfiguration({ directory: 'couchbase', encryptionKey: '' });
-      CBL.createOrOpenDatabase(this.externalDBName, config, (result: any) => {        
+      CBL.createOrOpenDatabase(this.externalDBName, config, (result: any) => {
         resolve(true);
       }, (err: any) => {
         reject(false);
@@ -132,11 +132,14 @@ export class LoginComponent {
 
   addReplicatorListener() {
     //attaching function to window object to make it global.  
-    (window as any).replicatorCB = function(result) {
+    (window as any).replicatorCB = function (result) {
       console.log("Replicator Listener:\n" + JSON.stringify(result));
     }
 
-    CBL.replicatorAddListener(this.sharedService.getDatabaseName(), 'replicatorCB', function(rs) { console.log('Replicator Listener added:' + rs) }, function(err) { console.log(err) });
+    if (this.sharedService.getReplicator() != null) {
+      this.sharedService.getReplicator().addChangeListener(this.sharedService.getReplicatorHash(), 'replicatorCB', function (rs) { console.log('Replicator Listener added:' + rs) }, function (err) { console.log(err) });
+    }
+
   }
 
 
@@ -144,24 +147,34 @@ export class LoginComponent {
   startPushAndPullReplicationForCurrentUser() {
 
     return new Promise((resolve, reject) => {
-
       var replicatorConfig = CBL.ReplicatorConfiguration(this.sharedService.getDatabaseName(), 'ws://10.0.2.2:4984/' + this.sharedService.getDatabaseName());
       replicatorConfig.continuous = true;
       replicatorConfig.authenticator = CBL.BasicAuthenticator(this.email, this.password);
       replicatorConfig.channels = ['channel.' + this.email];
       replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL;
 
-      CBL.replicatorStart(replicatorConfig, (rs) => {
-        resolve(true);
-      }, (err: any) => {
-        console.log("Failed to start replicator: " + err);
-        reject(false);
-      });
+      var replicator = CBL.Replicator(replicatorConfig);
+      if (replicator != null) {
+        this.sharedService.setReplicator(replicator);
+        replicator.createReplicator((result) => {
+          var result = JSON.parse(result);
+          var hash = result.data;
+          if (hash != null) {
+            this.sharedService.setReplicatorHash(hash);
+            replicator.start(hash, (rs) => {
+              resolve(true);
+            }, (err: any) => {
+              console.log("Failed to start replicator: " + err);
+              reject(false);
+            });
+          } else {
+            console.log('Hash not obtained for starting replicator');
+          }
+        }, (err: any) => {
+          console.log("Failed to initialize replicator: " + err);
+          reject(false);
+        });
+      }
     });
   }
-
-
-
-
-
 }
