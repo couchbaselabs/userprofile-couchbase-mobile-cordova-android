@@ -153,28 +153,27 @@ export class LoginComponent {
       replicatorConfig.channels = ['channel.' + this.email];
       replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL;
 
-      var replicator = CBL.Replicator(replicatorConfig);
-      if (replicator != null) {
-        this.sharedService.setReplicator(replicator);
-        replicator.createReplicator((result) => {
-          var result = JSON.parse(result);
-          var hash = result.data;
-          if (hash != null) {
+      var replicator = CBL.Replicator(replicatorConfig, (result: any) => {
+        var result = JSON.parse(result);
+        var hash = result.data;
+        if (hash != null) {
+          replicator.start(hash, (result: any) => {            
+            this.sharedService.setReplicator(replicator);
             this.sharedService.setReplicatorHash(hash);
-            replicator.start(hash, (rs) => {
-              resolve(true);
-            }, (err: any) => {
-              console.log("Failed to start replicator: " + err);
-              reject(false);
-            });
-          } else {
-            console.log('Hash not obtained for starting replicator');
-          }
-        }, (err: any) => {
-          console.log("Failed to initialize replicator: " + err);
+            resolve(true);
+          }, (err: any) => {
+            console.log("Failed to start replicator: " + err);
+            reject(false);
+          });
+        } else {
+          console.log('Hash not obtained for starting replicator');
           reject(false);
-        });
-      }
+        }
+      }, (err: any) => {
+        console.log("Failed to initialize replicator: " + err);
+        reject(false);
+      });
+     
     });
   }
 }
