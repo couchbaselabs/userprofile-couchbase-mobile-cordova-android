@@ -109,6 +109,12 @@ cd  /path/to/cloned-repo/standalone
                 implementation 'com.couchbase.lite:couchbase-lite-android:${version}'
              }
         ```
+        * In your 'app' level `repositories.gradle` file, add the following:
+        ```
+         maven {
+           url "https://mobile.maven.couchbase.com/maven2/dev/"
+         }
+        ```
  * You can run the app directly from Android Studio or issue the following command from command line
  
  ```bash
