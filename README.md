@@ -8,18 +8,22 @@ For enterprise apps, there is a [Ionic plugin](https://ionic.io/integrations/cou
 
 **LICENSE**: The source code for the app and cordova plugin is Apache-licensed, as specified in LICENSE. However, the usage of Couchbase Lite will be guided by the terms and conditions specified in Couchbase's Enterprise or Community License agreements.
 
-# Folder Structure
+# App Functionality
 
 # standalone
 This version of app demonstrates basic Database and Document CRUD operations using Couhbase Lite as a standalone, embedded database within your mobile app. A document is created and stored in a "user" Couchbase Lite database.
- 
+
+For details, refer to the README in the "standalone" folder of the repo. 
 
 # query
 This version of app extends the "standalone" version of the app and demonstrates basic query and full-text-search operations against Couhbase Lite database. In addition to the "user" database, this version of the app is bundled with a second "university" database pre-seeded with documents against which queries are issued.
 
+For details, refer to the README in the "query" folder of the repo.
+
 # sync
 This version of app extends the "query" version of the app and demonstrates basic database sync functionality. The app supports bi-directional sync with a remote Couchbase Server database through a Sync Gateway.
 
+For details, refer to the README in the "sync" folder of the repo.
 
 # Getting Started
 
@@ -77,7 +81,24 @@ cd  /path/to/cloned-repo/standalone
     
     * Open the Android project located inside your ionic project under directory: `/path/to/ionic/app/platforms/android` using Android Studio.
     
-        **Option 1: To add couchbase-lite-android as an .aar file**
+       
+    
+       **Option 1: Include couchbase-lite-android sdk from maven**
+    
+        * In your 'app' level `build.gradle` file, add your library file path. Follow the instructions in [Couchbase Lite Android Getting Started Guides](https://docs.couchbase.com/couchbase-lite/current/android/gs-install.html) for URL or maven repository etc.
+        ```
+             dependencies {
+                implementation 'com.couchbase.lite:couchbase-lite-android:${version}'
+             }
+        ```
+        * In your 'app' level `repositories.gradle` file, add the following:
+        ```
+             maven {
+               url "https://mobile.maven.couchbase.com/maven2/dev/"
+             }
+        ```
+
+        **Option 2: To add couchbase-lite-android as an .aar file**
     
         * Create a a new directory called 'libs' under your Android project
         * Copy the .aar files from within your downloaded Couchbase Lite package to the 'libs' folder 
@@ -100,22 +121,7 @@ cd  /path/to/cloned-repo/standalone
         
                 }
             ```
-    
-       **Option 2: Include couchbase-lite-android sdk from maven**
-    
-        * In your 'app' level `build.gradle` file, add your library file path. Follow the instructions in [Couchbase Lite Android Getting Started Guides](https://docs.couchbase.com/couchbase-lite/current/android/gs-install.html) for URL or maven repository etc.
-        ```
-             dependencies {
-                implementation 'com.couchbase.lite:couchbase-lite-android:${version}'
-             }
-        ```
-        * In your 'app' level `repositories.gradle` file, add the following:
-        ```
-             maven {
-               url "https://mobile.maven.couchbase.com/maven2/dev/"
-             }
-        ```
- * You can run the app directly from Android Studio or issue the following command from command line
+ * You can run the app directly from Android Studio IDE or issue the following command from command line
  
  ```bash
  ionic cordova run android

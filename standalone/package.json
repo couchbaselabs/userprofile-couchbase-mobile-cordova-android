@@ -23,6 +23,7 @@
     "@ionic-native/core": "^5.34.0",
     "@ionic-native/file": "^5.34.0",
     "@ionic/angular": "^5.5.2",
+    "cordova.plugin.couchbaselite": "git+https://github.com/rajagp/couchbase-lite-cordova-plugin-android.git",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
@@ -80,7 +81,8 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "cordova.plugin.couchbaselite": {}
     },
     "platforms": [
       "android"

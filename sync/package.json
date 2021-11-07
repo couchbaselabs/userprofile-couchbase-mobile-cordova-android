@@ -31,6 +31,7 @@
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-whitelist": "1.3.3",
+    "cordova.plugin.couchbaselite": "git+https://github.com/rajagp/couchbase-lite-cordova-plugin-android.git",
     "node-properties-parser": "0.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
@@ -92,7 +93,8 @@
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-zip": {}
+      "cordova-plugin-zip": {},
+      "cordova.plugin.couchbaselite": {}
     },
     "platforms": [
       "android"
