@@ -25,6 +25,8 @@
     "@ionic-native/file": "^5.35.0",
     "@ionic-native/zip": "^5.35.0",
     "@ionic/angular": "^5.5.2",
+    "cordova-android": "9.1.0",
+    "cordova.plugin.couchbaselite": "git+https://github.com/rajagp/couchbase-lite-cordova-plugin-android.git",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
@@ -45,7 +47,6 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
-    "cordova-android": "^9.1.0",
     "cordova-plugin-camera": "^5.0.2",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-file": "^6.0.2",
@@ -85,7 +86,8 @@
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-zip": {}
+      "cordova-plugin-zip": {},
+      "cordova.plugin.couchbaselite": {}
     },
     "platforms": [
       "android"
