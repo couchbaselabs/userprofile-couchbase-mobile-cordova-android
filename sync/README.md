@@ -152,18 +152,18 @@ Sign in as “Administrator” and “password” in login page
 
 * The Sync Gateway needs to be bootstrapped with a startup configuration file.
 
-* Download the configuration file corresponding to the sample application. Save the contents to config file named  `sync-gateway-config-userprofile-demo.json`
+* The configuration file corresponding to the sample application is available in the github repo hosting the app under the "sync" folder.
 
-    * The config file for 2.x of Sync Gateway is available [here](https://gist.github.com/rajagp/06844596fd642245931203a13cb51946).
+    * [sync-gateway-config-userprofile-demo.json](https://github.com/rajagp/userprofile-couchbase-mobile-cordova-android/blob/main/sync/sync-gateway-config-userprofile-demo.json): The Sync Gateway 2.x compatible version of configuration file.
 
-    * The config file for 3.0 of Sync Gateway is available [here](https://gist.github.com/rajagp/d757f8b5ef822e0da381cfcb9276b275).
+    * [sync-gateway-config-userprofile-demo.3.0.json](https://github.com/rajagp/userprofile-couchbase-mobile-cordova-android/blob/main/sync/sync-gateway-config-userprofile-demo.3.0.json): The Sync Gateway 2.x compatible version of configuration file.
 
-    **Note** that starting Sync Gateway 3.0, only the bootstrap information is provided in the config file.The Sync Gateway database configuration is handled via REST endpoint. The tutorial continues to use the ["legacy/ pre-3.0 mode"](https://docs.couchbase.com/sync-gateway/3.0/configuration-properties.html) of configuration with `disable_persistent_config` option set to `true`. 
+    **Note** that starting Sync Gateway 3.0, only the bootstrap information needs to be provided in the config file. The Sync Gateway database configuration is recommended to be handled via REST endpoint. The tutorial continues to use the ["legacy/ pre-3.0 compatability mode"](https://docs.couchbase.com/sync-gateway/3.0/configuration-properties.html)  with `disable_persistent_config` option in of configuration file set to `true`.
 
 * Switch to the the folder which contains the downloaded json file and run the following commands
 
 ```bash
-cd /folder/containing/downloaded/file
+cd /path/to/cloned/repo/sync
 ```
 
 * Follow these instructions to deploy Sync Gateway with the downloaded config file
@@ -176,13 +176,13 @@ docker rm sync-gateway
 
   * **Windows Systems**:
 
-    For Sync Gateway 3.0
+   Installing Sync Gateway 3.0
 
 ```bash
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-userprofile-demo.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-userprofile-demo.3.0.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ```
 
-For Sync Gateway 2.8
+Installing Sync Gateway 2.8
 
 ```bash
 docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %cd%/sync-gateway-config-userprofile-demo.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:2.8.3-enterprise -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
@@ -190,14 +190,14 @@ docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v %
 
   * **Non-Windows Systems**:
 
-  For Sync Gateway 3.0
+  Installing Sync Gateway 3.0
 
 ```bash
-docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-userprofile-demo.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise  -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
+docker run -p 4984-4985:4984-4985 --network workshop --name sync-gateway -d -v `pwd`/sync-gateway-config-userprofile-demo.3.0.json:/etc/sync_gateway/sync_gateway.json couchbase/sync-gateway:3.0.0-beta02-enterprise  -adminInterface :4985 /etc/sync_gateway/sync_gateway.json
 ```
 
 
-For Sync Gateway 2.8
+Installing Sync Gateway 2.8
 
 ```bash
 non-Windows Systems:
