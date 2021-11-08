@@ -23,7 +23,7 @@ The list of matching univerisities is queried (using the new Query API) from a l
 # Data Model
 Couchbase Lite is a JSON Document Store. A Document is a logical collection of named fields and values.The values are any valid JSON types. In addition to the standard JSON types, Couchbase Lite supports Date and Blob data types. While it is not required or enforced, it is a recommended practice to include a "type" property that can serve as a namespace for related documents.
 
-# The "User Profile" Document
+##  The "User Profile" Document
 The app deals with a single document with a "type" property of "user". The document ID is of the form **"user::<email>"**. 
 
 An example of a document would be
@@ -38,7 +38,7 @@ An example of a document would be
 ```
 The `profilePic` holds metadata of the binary image data associated with the document
 
-# The "University" Document
+## The "University" Document
 The app comes bundled with a collection of Documents of type "university". Each Document represents a university.
 
 ```json
@@ -71,7 +71,7 @@ In the project explorer, locate the `universities.zip` file. The zip archive inc
 * Launch the app
 * Log into the app with any email Id and password. Use the values "demo@example.com" and "password" for user Id and password fields respectively. 
 * If this is the first time that any user is signing in to the app, the pre-built database will be loaded from the App Bundle. In addition, new user-specific Database will be created/opened. On subsequent login, the user’s existing user database will be opened. The prebuilt database is shared across all users of the app. 
-* Tap on "University" option from profile screen
+* Tap on "CHoose" option from profile screen
 * You should see a screen show that allows you enter the search criteria for the university
 * Enter "Harv" for name. You can optionally enter "united states" for location
 * Confirm that you see a list of universities that match the criteria

@@ -37,6 +37,11 @@ For details, refer to the README in the "sync" folder of the repo.
 * Android Build Tools 29
 * [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
+## Couchbase Versions
+* Couchbase Lite 3.0+
+* Sync Gateway 3.0+
+* Couchbase Server 6.6+
+
 ## Build Instructions
 
 * clone repository

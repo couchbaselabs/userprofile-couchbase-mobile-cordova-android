@@ -15,7 +15,7 @@ This app demonstrates basic Database and Document CRUD operations using Couhbase
 # Data Model
 Couchbase Lite is a JSON Document Store. A Document is a logical collection of named fields and values.The values are any valid JSON types. In addition to the standard JSON types, Couchbase Lite supports Date and Blob data types. While it is not required or enforced, it is a recommended practice to include a "type" property that can serve as a namespace for related documents.
 
-# The "User Profile" Document
+## The "User Profile" Document
 The app deals with a single document with a "type" property of "user". The document ID is of the form **"user::<email>"**. 
 
 An example of a document would be
