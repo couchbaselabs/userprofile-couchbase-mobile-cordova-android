@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private camera: Camera, private sharedService: SharedService,
     private router: Router, private alertController: AlertController,
-    public modalController: ModalController, public zone: NgZone, private platform :  Platform) { }
+    public modalController: ModalController, public zone: NgZone, private platform: Platform) { }
 
 
   ngOnInit() {
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
     this.name = result.name;
     this.address = result.address;
     this.university = result.university;
-    
+
     if (result.profilePic) {
       var that = this;
       CBL.getBlob(this.dbName, result.profilePic, (base64: any) => {
@@ -169,10 +169,10 @@ export class HomeComponent implements OnInit {
     var replicator = this.sharedService.getReplicator();
     var replicatorHash = this.sharedService.getReplicatorHash();
 
-    replicator.removeChangeListener(replicatorHash, (result: any) => {
-      console.log('Replicator listener removed.');
-      replicator.stop(replicatorHash, (result: any) => {
-        console.log('Replicator stopped.');
+    replicator.stop(replicatorHash, (result: any) => {
+      console.log('Replicator stopped.');
+      replicator.removeChangeListener(replicatorHash, (result: any) => {
+        console.log('Replicator listener removed.');
         CBL.queryRemoveListener(this.dbName, this.liveQuery, (result: any) => {
           console.log('Query listener removed.');
           CBL.dbRemoveListener(this.dbName, (result: any) => {
