@@ -23,7 +23,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (!Object.keys(CBL).length) {
+    if (!CBL) {
       alert('Internal error. Make sure the plugin is installed properly.')
     }
 

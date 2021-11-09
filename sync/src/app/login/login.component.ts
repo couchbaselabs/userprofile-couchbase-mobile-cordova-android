@@ -30,10 +30,9 @@ export class LoginComponent {
 
     this.platform.ready().then(() => {
       let zipfileName = this.externalDBName + ".zip";
-      if (!Object.keys(CBL).length) {
+      if (!CBL) {
         alert('Internal error. Make sure the plugin is installed properly.')
       }
-
       //enabling native logging
       CBL.enableConsoleLogging(CBL.Domain.ALL, CBL.LogLevel.DEBUG, (result) => console.log('Native Logs Enabled: ' + result), (error) => console.log(error));
 

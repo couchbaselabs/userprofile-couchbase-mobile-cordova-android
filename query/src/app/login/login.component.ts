@@ -30,7 +30,7 @@ export class LoginComponent {
 
     this.platform.ready().then(() => {
       let zipfileName = this.externalDBName + ".zip";
-      if (!Object.keys(CBL).length) {
+      if (!CBL) {
         alert('Internal error. Make sure the plugin is installed properly.')
       }
 
