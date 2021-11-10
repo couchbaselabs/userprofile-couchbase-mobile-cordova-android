@@ -7,7 +7,6 @@ export class SharedService {
 
   databaseName: string;
   userEmail: string;
-  replicatorHash: number;
   replicator: any;
 
   constructor() { }
@@ -27,14 +26,6 @@ export class SharedService {
 
   getUserEmail() {
     return this.userEmail;
-  }
-
-  setReplicatorHash(hash: number) {
-    this.replicatorHash = hash;
-  }
-
-  getReplicatorHash() {
-    return this.replicatorHash;
   }
 
   setReplicator(replicator: any) {

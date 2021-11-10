@@ -18,12 +18,14 @@ export class LoginComponent {
   externalDBName = "universities";
   email: string;
   password: string;
+  replicator: any = null;
 
   constructor(private router: Router, private sharedService: SharedService, private file: File, private zip: Zip, private platform: Platform) { }
 
   ionViewDidEnter() {
     this.email = null;
     this.password = null;
+    this.replicator = null;
   }
 
   ngOnInit() {
@@ -135,8 +137,8 @@ export class LoginComponent {
       console.log("Replicator Listener:\n" + JSON.stringify(result));
     }
 
-    if (this.sharedService.getReplicator() != null) {
-      this.sharedService.getReplicator().addChangeListener(this.sharedService.getReplicatorHash(), 'replicatorCB', function (rs) { console.log('Replicator Listener added:' + rs) }, function (err) { console.log(err) });
+    if (this.replicator) {
+      this.replicator.addChangeListener('replicatorCB', function (rs) { console.log('Replicator Listener added:' + rs) }, function (err) { console.log(err) });
     }
 
   }
@@ -147,26 +149,20 @@ export class LoginComponent {
 
     return new Promise((resolve, reject) => {
       var replicatorConfig = CBL.ReplicatorConfiguration(this.sharedService.getDatabaseName(), 'ws://10.0.2.2:4984/' + this.sharedService.getDatabaseName());
-      replicatorConfig.continuous = true;
+/*       replicatorConfig.continuous = true;
       replicatorConfig.authenticator = CBL.BasicAuthenticator(this.email, this.password);
       replicatorConfig.channels = ['channel.' + this.email];
-      replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL;
+      replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL; */
 
-      var replicator = CBL.Replicator(replicatorConfig, (result: any) => {
-        var result = JSON.parse(result);
-        var hash = result.data;
-        if (hash != null) {
-          replicator.start(hash, (result: any) => {            
-            this.sharedService.setReplicator(replicator);
-            this.sharedService.setReplicatorHash(hash);
+      this.replicator = CBL.Replicator(replicatorConfig, (result: any) => {
+        if (result == 'OK') {
+          this.replicator.start((result: any) => {            
+            this.sharedService.setReplicator(this.replicator);
             resolve(true);
           }, (err: any) => {
             console.log("Failed to start replicator: " + err);
             reject(false);
           });
-        } else {
-          console.log('Hash not obtained for starting replicator');
-          reject(false);
         }
       }, (err: any) => {
         console.log("Failed to initialize replicator: " + err);
