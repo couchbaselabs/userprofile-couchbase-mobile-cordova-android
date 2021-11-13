@@ -138,7 +138,9 @@ export class LoginComponent {
     }
 
     if (this.replicator) {
-      this.replicator.addChangeListener('replicatorCB', function (rs) { console.log('Replicator Listener added:' + rs) }, function (err) { console.log(err) });
+      this.replicator.addChangeListener('replicatorCB', function (rs) { 
+        console.log('Replicator Listener added:' + rs);
+      }, function (err) { console.log(err) });
     }
 
   }
@@ -149,11 +151,11 @@ export class LoginComponent {
 
     return new Promise((resolve, reject) => {
       var replicatorConfig = CBL.ReplicatorConfiguration(this.sharedService.getDatabaseName(), 'ws://10.0.2.2:4984/' + this.sharedService.getDatabaseName());
-/*       replicatorConfig.continuous = true;
+      replicatorConfig.continuous = true;      
       replicatorConfig.authenticator = CBL.BasicAuthenticator(this.email, this.password);
       replicatorConfig.channels = ['channel.' + this.email];
-      replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL; */
-
+      replicatorConfig.replicatorType = CBL.ReplicatorType.PUSH_AND_PULL; 
+      
       this.replicator = CBL.Replicator(replicatorConfig, (result: any) => {
         if (result == 'OK') {
           this.replicator.start((result: any) => {            
