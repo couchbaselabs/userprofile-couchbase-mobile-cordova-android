@@ -66,7 +66,9 @@ export class HomeComponent implements OnInit {
 
     this.camera.getPicture(options).then((base64) => {
 
-      this.profilePic = base64;
+      this.zone.run(() => {
+        this.profilePic = base64;
+      });
 
     }, (e: any) => console.error(e));
   }
