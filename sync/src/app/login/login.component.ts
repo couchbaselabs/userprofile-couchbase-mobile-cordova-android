@@ -135,6 +135,11 @@ export class LoginComponent {
     //attaching function to window object to make it global.
     (window as any).replicatorCB = function (result) {
       console.log("Replicator Listener:\n" + JSON.stringify(result));
+      if (result) {
+        if (result.errorCode && result.errorCode == '10401' && result.status == 'stopped') {
+          alert('User is not authorized to sync with remote server. Check credentials and try again.')
+        }
+      }
     }
 
     if (this.replicator) {
