@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { SharedService } from '../shared.service';
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   profilePic: string;
   
 
-  constructor(private camera: Camera, private sharedService: SharedService, private router: Router, private alertController: AlertController) { }
+  constructor(private camera: Camera, private sharedService: SharedService, private router: Router, private alertController: AlertController, private zone: NgZone) { }
 
   ngOnInit() {
 
