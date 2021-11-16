@@ -34,7 +34,7 @@ export class LoginComponent {
 
     CBL.createOrOpenDatabase(this.userProfileDBName, config, (result: any) => {
       console.log('Database Initialized : ' + result);
-	  this.sharedService.setUserEmail(this.email);
+	    this.sharedService.setUserEmail(this.email);
       this.sharedService.setDatabaseName(this.userProfileDBName);
       this.router.navigate(['/home']);
 
