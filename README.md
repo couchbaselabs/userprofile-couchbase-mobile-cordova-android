@@ -38,15 +38,15 @@ For details, refer to the README in the "sync" folder of the repo.
 * [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
 ## Couchbase Versions
-* Couchbase Lite 3.0+
-* Sync Gateway 3.0+
+* Couchbase Lite 3.0.x
+* Sync Gateway 3.0.x
 * Couchbase Server 6.6+
 
 ## Build Instructions
 
 * clone repository
 ```
-git clone https://github.com/rajagp/userprofile-couchbase-mobile-cordova-android/
+git clone https://github.com/couchbaselabs/userprofile-couchbase-mobile-cordova-android/
 ```
 * Go to the directory into directory containing the appropriate version of app. For example, for the "standalone" version of app, switch to standalone folder.
 ```
@@ -59,7 +59,7 @@ cd  /path/to/cloned-repo/standalone
  npm install
  ```
  
-*  Install couchbase lite cordova plugin. For this, follow [instructions](https://github.com/rajagp/couchbase-lite-cordova-plugin-android) to add the plugin to the project. Instructions are repeated here  for convenience. In case of discrepencies, refer to the plugin repo.
+*  Install couchbase lite cordova plugin. For this, follow [instructions](https://github.com/couchbaselabs/couchbase-lite-cordova-plugin-android) to add the plugin to the project. Instructions are repeated here  for convenience. In case of discrepencies, refer to the plugin repo.
  
     *  Install android platform into your Ionic project 
 
@@ -74,7 +74,7 @@ cd  /path/to/cloned-repo/standalone
     * Install the plugin by adding the appropriate Github repo. If you fork the repo and modify it, then be sure to point it to the right URL!
 
     ```bash
-        ionic cordova plugin add https://github.com/rajagp/couchbase-lite-cordova-plugin-android.git
+        ionic cordova plugin add https://github.com/couchbaselabs/couchbase-lite-cordova-plugin-android.git
     ```
 * Install native couchbase lite framework
 
@@ -145,7 +145,7 @@ ionic cordova platform add android
 
 ionic cordova build android
 
-ionic cordova plugin add https://github.com/rajagp/couchbase-lite-cordova-plugin-android.git
+ionic cordova plugin add https://github.com/couchbaselabs/couchbase-lite-cordova-plugin-android.git
 
 
 ```
